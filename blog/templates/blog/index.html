@@ -1,13 +1,12 @@
-<!DOCTYPE html>
 {% extends 'blog/base.html' %}
 
 {% load static %}
 
-    {% block title %}  Krishna Blog | Home {% endblock title %}
+{% block title %} Krishna Blog | Home {% endblock %}
 
 {% block content %}
 
-
+<!-- .site-wrap -->
 <div class="site-wrap">
 
     <div class="site-section py-0">
@@ -18,7 +17,7 @@
                     <div class="half-post-entry d-block d-lg-flex bg-light">
 
                         {% if post.post_pic %}
-                        <div class="img-bg" style="background-image: url({{post.post_pic.url}});"></div>
+                        <div class="img-bg" style="background-image: url({{ post.post_pic.url }});"></div>
                         {% else %}
                         <div class="img-bg" style="background-image: url();"></div>
                         {% endif %}
@@ -29,8 +28,8 @@
                             <p class="mb-3">{{ post.content | truncatewords:30 }}</p>
 
                             <div class="post-meta">
-                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
-                                        href="#">News</a></span>
+                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in
+                                    <a href="#">{{ post.category }}</a></span>
                                 <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
                                         class="icon-star2"></span></span>
                             </div>
@@ -60,8 +59,8 @@
                     </div>
                     <div class="row">
                         {% if picked_posts %}
-                        {% for post in picked_posts %}
 
+                        {% for post in picked_posts %}
                         {% if forloop.counter is 1 %}
                         <div class="col-md-6">
                             <div class="post-entry-1">
@@ -72,8 +71,8 @@
                                 <h2><a href="{% url 'blog:post' post.slug %}">{{ post.title }}</a></h2>
                                 <p>{{ post.content | truncatewords:35 }}</p>
                                 <div class="post-meta">
-                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
-                                        href="#">News</a></span>
+                                    <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                            href="#">{{ post.category }}</a></span>
                                     <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
                                             class="icon-star2"></span></span>
                                 </div>
@@ -85,6 +84,7 @@
 
                         <div class="col-md-6">
                             {% for post in picked_posts %}
+
                             {% if forloop.counter is not 1 %}
                             <div class="post-entry-2 d-flex bg-light">
                                 <div class="thumbnail" style="background-image: url('images/img_v_1.jpg')">
@@ -120,6 +120,7 @@
                     </div>
                 </div>
                 <!-- End picked posts -->
+
                 <!-- Trending posts -->
                 <div class="col-lg-4">
                     <div class="section-title">
@@ -130,10 +131,10 @@
                     <div class="trend-entry d-flex">
                         <div class="number align-self-start">0{{ forloop.counter }}</div>
                         <div class="trend-contents">
-                            <h2><a href="{% url 'blog:post' post.slug %}">{{post.title}}</a></h2>
+                            <h2><a href="{% url 'blog:post' post.slug %}">{{ post.title }}</a></h2>
                             <div class="post-meta">
                                 <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
-                                        href="#">News</a></span>
+                                        href="#">{{ post.category }}</a></span>
                                 <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
                                         class="icon-star2"></span></span>
                             </div>
@@ -162,14 +163,14 @@
                 {% endif %}
                 <div class="contents">
                     <span class="caption">Best Post of the Blog</span>
-                    <h2><a href="{% url 'blog:post' best_post.slug %}">{{ best_post.title}}</a></h2>
+                    <h2><a href="{% url 'blog:post' best_post.slug %}">{{ best_post.title }}</a></h2>
                     <p class="mb-3">{{ best_post.content | truncatewords:60}}</p>
 
                     <div class="post-meta">
                         <span class="d-block"><a href="{% url 'blog:author' best_post.creator.slug %}">{{ best_post.creator }}</a> in <a
-                                href="#">Food</a></span>
-                        <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span
-                                class="icon-star2"></span></span>
+                                href="#">{{ post.category }}</a></span>
+                        <span class="date-read">{{ post.created_date }} <span class="mx-1">&bullet;</span> {{ post.published_date| timesince}}
+                            <span class="icon-star2"></span></span>
                     </div>
 
                 </div>
@@ -178,108 +179,6 @@
     </div>
     {% endif %}
     <!-- End Best post -->
-
-    <!--    -->
-    <!--    <div class="site-section">-->
-    <!--        <div class="container">-->
-    <!--            <div class="row">-->
-
-    <!-- More Posts  -->
-    <!--                <div class="col-lg-6">-->
-    <!--                    <div class="section-title">-->
-    <!--                        <h2>Politics</h2>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_1.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_2.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_3.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!-- End More Posts  -->
-
-    <!-- More Posts  -->
-    <!--                <div class="col-lg-6">-->
-    <!--                    <div class="section-title">-->
-    <!--                        <h2>Business</h2>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_1.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_2.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="post-entry-2 d-flex">-->
-    <!--                        <div class="thumbnail" style="background-image: url('images/img_v_3.jpg')"></div>-->
-    <!--                        <div class="contents">-->
-    <!--                            <h2><a href="blog-single.html">News Needs to Meet Its Audiences Where They Are</a></h2>-->
-    <!--                            <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi-->
-    <!--                                temporibus praesentium neque, voluptatum quam quibusdam.</p>-->
-    <!--                            <div class="post-meta">-->
-    <!--                                <span class="d-block"><a href="#">Dave Rogers</a> in <a href="#">News</a></span>-->
-    <!--                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span-->
-    <!--                                        class="icon-star2"></span></span>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!-- End More Posts  -->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
 
 
     <div class="site-section">
@@ -304,8 +203,8 @@
                             <div class="post-meta">
                         <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
                                 href="#">Food</a></span>
-                                <span class="date-read">Jun 14 <span class="mx-1">&bullet;</span> 3 min read <span
-                                        class="icon-star2"></span></span>
+                                <span class="date-read">{{ post.created_date }} <span class="mx-1">&bullet;</span> {{ post.published_date| timesince}}
+                                    <span class="icon-star2"></span></span>
                             </div>
                         </div>
                     </div>
@@ -326,9 +225,12 @@
                             <h2><a href="{% url 'blog:post' post.slug %}">{{post.title}}</a></h2>
                             <div class="post-meta">
                                 <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
-                                        href="#">News</a></span>
-                                <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
-                                        class="icon-star2"></span></span>
+                                        href="#">{{ post.category}}</a></span>
+                                <span class="date-read">{{ post.created_date }}
+                                <span class="mx-1">&bullet;</span>
+                                 {{ post.published_date| timesince}}
+                                  <span class="icon-star2"></span>
+                                  </span>
                             </div>
                         </div>
                     </div>
@@ -344,6 +246,7 @@
                 <!-- End Popular Posts  -->
             </div>
 
+            <!-- Pagination -->
             <div class="row">
                 <div class="col-lg-6">
                     <ul class="custom-pagination list-unstyled">
@@ -354,6 +257,8 @@
                     </ul>
                 </div>
             </div>
+            <!-- End of Pagination -->
+
         </div>
     </div>
 
@@ -362,8 +267,7 @@
             <form action="#" class="row align-items-center">
                 <div class="col-md-5 mr-auto">
                     <h2>Newsletter Subcribe</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis aspernatur ut at quae omnis
-                        pariatur obcaecati possimus nisi ea iste!</p>
+                    <p> WE'll workk on this so soon!!!!!</p>
                 </div>
                 <div class="col-md-6 ml-auto">
                     <div class="d-flex">
@@ -375,10 +279,8 @@
         </div>
     </div>
 
-
 </div>
-<!-- .site-wrap -->
-
+<!-- End of .site-wrap -->
 
 <!-- loader -->
 <div id="loader" class="show fullscreen">
@@ -388,5 +290,6 @@
                 stroke="#ff5e15"/>
     </svg>
 </div>
+<!-- End loader -->
 
 {% endblock %}

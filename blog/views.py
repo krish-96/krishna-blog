@@ -61,8 +61,8 @@ def home(request):
     slider_posts = posts.order_by('id')[0:6]
     picked_posts = posts.order_by('?')[0:5]
     recent_posts = posts.order_by('-published_date')[:5:]
-    # best_post = posts.get(title='psychology of colors')
-    best_post = posts.order_by('?')[:1:]
+    best_post = posts.get(title='The Wolf Story')
+    # best_post = posts.order_by('?')[0:1]
     popular_posts = posts.order_by('-updated_date')[:5:]
     context = {
                 'posts':posts,
