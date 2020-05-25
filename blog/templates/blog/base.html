@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load posts_tags %}
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}">
+
+<head>
+
+    <title>{% block title %} {% endblock title %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="https://fonts.googleapis.com/css?family=B612+Mono|Cabin:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '' %}fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="{% static '' %}css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static '' %}css/jquery-ui.css">
+    <link rel="stylesheet" href="{% static '' %}css/owl.carousel.min.css">
+    <link rel="stylesheet" href="{% static '' %}css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="{% static '' %}css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="{% static '' %}css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="{% static '' %}css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="{% static '' %}fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="{% static '' %}css/aos.css">
+    <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="{% static '' %}css/style.css">
+
+
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+{% if messages %}<br>
+    <div style="font-size:14px;" class="col-md-12 text-center mt-0 pt-0">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message | safe}}</div>
+            <hr>
+        {% endfor %}
+    </div>
+
+{% endif %}
+
+{% include 'blog/navbar.html' %}
+
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'blog/footer.html' %}
+
+
+<script src="{% static '' %}js/jquery-3.3.1.min.js"></script>
+<script src="{% static '' %}js/jquery-migrate-3.0.1.min.js"></script>
+<script src="{% static '' %}js/jquery-ui.js"></script>
+<script src="{% static '' %}js/popper.min.js"></script>
+<script src="{% static '' %}js/bootstrap.min.js"></script>
+<script src="{% static '' %}js/owl.carousel.min.js"></script>
+<script src="{% static '' %}js/jquery.stellar.min.js"></script>
+<script src="{% static '' %}js/jquery.countdown.min.js"></script>
+<script src="{% static '' %}js/bootstrap-datepicker.min.js"></script>
+<script src="{% static '' %}js/jquery.easing.1.3.js"></script>
+<script src="{% static '' %}js/aos.js"></script>
+<script src="{% static '' %}js/jquery.fancybox.min.js"></script>
+<script src="{% static '' %}js/jquery.sticky.js"></script>
+<script src="{% static '' %}js/jquery.mb.YTPlayer.min.js"></script>
+<script src="{% static '' %}js/main.js"></script>
+</body>
+
+
+</html>

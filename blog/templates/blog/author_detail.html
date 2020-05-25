@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% extends 'blog/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/authors.css' %}">
+
+{% block title %} Author - {{author.name|title}} {% endblock title %}
+
+{% block content %}
+
+<div class="site-section ">
+        <div class="row">
+<div class="container-fluid">
+
+
+        <div class="container-fluid">
+            <div class=" bg-light">
+                    <h3 class="text-center p-2 text-dark"> {{author.name|title}} - Profile</h3>
+                </div>
+    {% if author %}
+    <div class="row p-0 m-0 ">
+        <div class="col col-12 col-sm-12 col-md-4 col-lg-4 p-5">
+            <div class="card ">
+                <div class="card-body ">
+                    <img class="rounded-circle" {% if author.photo %} src="{{author.photo.url}}" {% else %}
+                         src="{% static 'images/new_user.png' %}" {% endif %} title="{{author.name}}"
+                         alt="{{author.name}}" height="300px"
+                         width="300px">
+                    <div class="card-body mb-0 pb-0 mt-2 pt-0" style="color:black;">
+                        <h6> Name : <span >{{author.name|title}}</span></h6>
+                        <h6> D.O.B : <span >{{author.dob|date}}</span></h6>
+                        <h6> Contact Number : <span
+                                >{{author.phone_no}}</span></h6>
+                        <h6> Email : <span >{{author.email|linebreaks}}</span></h6>
+                        <h6> Address :
+                            <span >{{author.address|linebreaks}}
+                            </span>
+                        </h6>
+                        <h6> Joined Date : <span >{{author.joined_date|date|linebreaks}}</span>
+                        </h6>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col col-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="row ">
+                <div class="col col-12">
+                    <div class=" text-dark  mt-4 mb-4">
+
+                        <h4 class="card-header text-center" >About - {{author.name|title}}  </h4>
+                        <div class="text-left mt-3 ml-3 mb-4" >
+                            <p>{% if author.about %}{{author.about}}{% else %} No Information Available. {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col ">
+                    <div class="card mb-2 text-dark">
+                        <h4 class="card-header text-center " >Total posts</h4>
+                        <div class="card-body text-center" >
+                            <h2 style="color:blue; font-weight:900;">{{total_posts}}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-2 text-dark">
+                         <h4 class="card-header text-center " >Total Comments  </h4>
+                        <div class="card-body text-center" >
+                            <h2 style="color:blue; font-weight:900;">N I Y!</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card ">
+                         <h4 class="card-header text-center " >Total Likes </h4>
+                        <div class="card-body text-center" >
+                            <h2 style="color:blue; font-weight:900;">N I Y!</h2>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class=" mt-4 ">
+                         <h4 class="card-header text-center section-title" >Most commented posts : </h4>
+                        <div >
+                            <h2>N I Y!</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class=" mt-5 mb-0">
+                        <h4 class="card-header text-center section-title" >Recent 5 posts : </h4>
+
+                        <div class="mt-0" >
+                                                        {% if recent_posts %}
+                                                        {% for post in recent_posts %}
+                                                        <h5><a href="{% url 'blog:post' post.slug %}">{{forloop.counter}}.{{post.title}} : </a></h5>
+                            <p> {{post.content|truncatewords:50}}</p>
+                                                        {% endfor %}
+                                                        {% else %}
+                                                        <p>No posts Yet!</p>
+                                                        {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class=" mt-4  ">
+                        <h4 class="card-header text-center section-title" >Posts List : </h4>
+                        <div class="" >
+                            {% if post_list %}
+                            {% for post in post_list %}
+                            <h5><a href="{% url 'blog:post' post.slug %}">{{forloop.counter}}.{{post.title}} : </a></h5>
+                            <p> {{post.content|truncatewords:50}}
+                            {% endfor %}
+                            {% else %}
+                            <p>No posts yet!</p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+    {% else %}
+    <div class="card-body text-center">
+        <h4 class="alert" style="color:gold;"><b><i> Something is wrong!</i></b></h4>
+    </div>
+    {% endif %}
+</div>
+
+
+        </div>
+        </div>
+    <div class="row ">
+    <div class="col-12 card  bg-light" >
+    {% if user.is_superuser %}
+
+    <a href="{% url 'blog:authors' %}" class="btn btn-secondary btn-sm p-2"><span style="font-size:14px;letter-spacing:2px;">Authors list</span>
+    </a>
+
+    {% endif %}
+    <a href="{% url 'blog:home' %}" class="btn btn-primary btn-sm p-2"><span
+            style="font-size:14px;letter-spacing:2px;">Home</span>
+    </a>
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}

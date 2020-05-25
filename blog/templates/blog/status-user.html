@@ -1,0 +1,97 @@
+{% load posts_tags %}
+<style>
+
+</style>
+
+<div class="row">
+    {% if request.user.is_authenticated %}
+    <div class="col  col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Your Total Posts </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{{my_total_posts}}</h2>
+        </div>
+    </div>
+
+    <div class="col  col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Your  Public Posts   </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{{my_total_public_posts}}</h2>
+
+        </div>
+    </div>
+    <div class="col  col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Your Draft Posts  </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{{my_total_draft_posts}}</h2>
+
+        </div>
+    </div>
+    <div class="col  col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Your Private posts </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{{my_total_private_posts}}</h2>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col col-12 col-sm-12 ">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Total Posts Available in Blog </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{% total_public_posts %}</h2>
+        </div>
+    </div>
+    {% if request.user.is_superuser %}
+    <div class="col col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Posts ( incl Pr + Dr )  </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{% total_posts %}</h2>
+        </div>
+    </div>
+    <div class="col col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Posts (only Pr & Dr)  </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{% total_private_posts %}</h2>
+        </div>
+    </div>
+    <div class="col col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Total Authors  </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{% total_no_authors %}</h2>
+        </div>
+    </div>
+    <div class="col col-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark">Total Users  </h5>
+            <h2 class="card-body text-center" style="color:blue; font-weight:900;">{% total_no_users %}</h2>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col  col-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card bg-light mb-5 p-0">
+             <h5 class="card-header text-dark"> Latest Posts  </h5>
+
+            <h5 class="card-body pl-5 mb-0 pb-4" >
+
+                {% for post in latest_posts %}
+                <a href="{% url 'blog:post' post.slug %}">{{ forloop.counter }} . {{ post }}</a>
+                <br>
+                {% endfor %}</h5>
+
+        </div>
+    </div>
+    <div class="col  col-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card bg-light mb-5 p-0">
+            <h5 class="card-header text-dark"> Top Commented Posts   </h5>
+            <h5 class="card-body pl-5 mb-0 pb-4" >
+
+                {% for post in most_commented %}
+                <a href="{% url 'blog:post' post.slug %}">{{ forloop.counter }} . {{ post }}</a>
+                <br>
+                {% endfor %}</h5>
+        </div>
+    </div>
+
+</div>

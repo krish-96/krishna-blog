@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+{% extends 'blog/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/posts.css' %}">
+
+{% block title %}
+
+{% if recent or popular or query %}
+{% if recent %}
+Recent Posts
+{% endif %}
+{% if popular %}
+Most Commented Posts
+{% endif %}
+{% if query %}
+Search - {{ query | title }}
+{% endif %}
+
+{% else %}
+Posts List
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="site-section">
+    <div class="container">
+
+        <div class="row">
+            <!-- All Posts  -->
+            <div class="col-lg-9">
+                <div class="section-title ">
+                    {% if recent or popular or query %}
+                    {% if recent %}
+                    <h2>Recent Posts :</h2>
+                    {% endif %}
+                    {% if popular %}
+                    <h2>Popular Posts :</h2>
+                    {% endif %}
+                    {% if query %}
+                    <h2>Search / <span style="color:blue;">{{ query | title }}</span></h2>
+                    {% endif %}
+
+                    {% else %}
+                    <h2>Krishna Blog  Available Posts :</h2>
+                    {% endif %}
+                </div>
+
+                {% for post in object_list %}
+                <div class="post-entry-2 d-flex">
+                    <div class="thumbnail order-md-2" style="background-image: url({{ post.post_pic.url }});"></div>
+                    <div class="contents order-md-1 pl-0">
+                        <h4><a href="{% url 'blog:post' post.slug %}">{{ post.title}}</a></h4>
+                        <p class="mb-3">{{ post.content | truncatewords:30}}</p>
+                        <div class="post-meta">
+                        <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                href="#">{{ post.category }}</a></span>
+                            <span class="date-read">Published on {{ post.published_date }} <br> <span class="mx-1">&bullet;</span>Updated : {{ post.created_date| timesince}} ago <span
+                                    class="icon-star2"></span></span>
+                            {% if user.is_superuser %}
+                            <br>
+
+                            <a href="{% url 'blog:delete-post' post.slug %}" class="btn btn-primary"
+                               style="color:#fff;">
+                                Delete Post</a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+            <!-- End All Posts  -->
+
+            <!-- Popular Posts  -->
+            <div class="col-lg-3">
+                <div class="section-title">
+                    <h2>Popular Posts :</h2>
+                </div>
+                {% for post in popular_posts %}
+
+                <div class="trend-entry d-flex">
+                    <div class="number align-self-start">0{{ forloop.counter }}</div>
+                    <div class="trend-contents">
+                        <h2><a href="{% url 'blog:post' post.slug %}">{{post.title}}</a></h2>
+                        <div class="post-meta">
+                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                        href="#">News</a></span>
+                            <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
+                                    class="icon-star2"></span></span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <p>
+                    <a href="{% url 'blog:popular-posts' %}" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
+                </p>
+
+
+                <!-- End Popular Posts  -->
+
+                <!--  Recent Posts  -->
+                <div class="section-title">
+                    <h2>Recent Posts :</h2>
+                </div>
+                {% for post in recent_posts %}
+
+                <div class="trend-entry d-flex">
+                    <div class="number align-self-start">0{{ forloop.counter }}</div>
+                    <div class="trend-contents">
+                        <h2><a href="{% url 'blog:post' post.slug %}">{{post.title}}</a></h2>
+                        <div class="post-meta">
+                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                        href="#">News</a></span>
+                            <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
+                                    class="icon-star2"></span></span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <p>
+                    <a href="{% url 'blog:recent-posts' %}" class="more">See All Recent Posts <span
+                            class="icon-keyboard_arrow_right"></span></a>
+                </p>
+
+
+                <!-- End Recent posts -->
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

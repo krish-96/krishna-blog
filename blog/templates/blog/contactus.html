@@ -1,0 +1,85 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="section-title mb-5">
+                    <h2 style="font-weight:900;font-family: 'Girassol', cursive;">Contact Us</h2>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="name">Name : </label>
+                            <input type="text" id="name" name="name" class="form-control form-control"
+                                   placeholder="Your Name">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="email">Email : </label>
+                            <input type="text" id="email" name="email" class="form-control form-control"
+                                   placeholder="Your Email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="subject">Subject : </label>
+                            <input type="text" id="subject" name="subject" class="form-control form-control"
+                                   placeholder="Your Subject ">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="body">Message</label>
+                            <textarea name="body" id="body" cols="30" rows="10" class="form-control"
+                                      placeholder="Your Message here..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row text-right">
+                        <div class="col-12 ">
+                            <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="section-title mb-5 ml-5">
+                    <h2 style="font-weight:900;font-family: 'Girassol', cursive;">Our Office Address</h2>
+                </div>
+
+                <div class="'card-body text-right ">
+                    <div class="card-title">
+                        <address class="text-left ml-5 pl-5">
+
+                            <a href="mailto:my@gmail.com">Krishna Bellamkonda</a>.<br>
+                            Visit us at :<br>
+                            Madhapur, Hyderabad, Telangana 500081<br>
+                            our website : <a href="">krishna.com</a> <br>
+                            Box 564, Disneyland<br>
+                            India
+                        </address>
+                    </div>
+                    <div class="section-title mb-5">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7613.006847775043!2d78.38296138623045!3d17.435602736162725!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb339ecd8cf9b2ce5!2sZenQ!5e0!3m2!1sen!2sin!4v1587039628572!5m2!1sen!2sin"
+                                width="100%" height="300" frameborder="0" style="border:3px groove transparent;"
+                                allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

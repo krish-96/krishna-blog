@@ -1,0 +1,69 @@
+{% extends 'blog/base.html' %}
+{% block title %} {{ author.name | upper }} Account Settings  {% endblock %}
+
+{% block content %}
+
+
+<div class="container pt-5 mt-5">
+    <div class="">
+        <h4 class="card-header text-center text-dark">My Settings </h4>
+    </div>
+    <div class="row pt-3">
+        <div class="col-md-2 mb-4">
+            {% include 'blog/user-actions.html' %}
+
+        </div>
+        <div class="col-md-10">
+
+    <div class="row mt-5 ">
+
+        <div class="col col-12 col-sm-12 col-md-4 col-lg-4 mb-4 ">
+            <div class="card bg-dark" >
+                <h4 class="card-header text-light">Profile Settings</h4>
+                <div class="card-body ">
+
+                    <a href="{% url 'blog:update-author' request.user %}">Update Profile
+                    </a>
+                    <hr>
+                    <a href="{% url 'blog:user-settings' %}"> My Settings</a>
+                    <hr>
+                   <a href="#">{{author.name}}</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col col-12 col-sm-12 col-md-4 col-lg-4 mb-4 ">
+            <div class="card bg-dark">
+                <h4 class="card-header text-light">Account Settings</h4>
+                <div class="card-body ">
+
+                    <a href="{% url 'blog:password_change' %}">Change Password </a>
+                    <hr>
+                    <a href="{% url 'blog:user-settings' %}"> My Settings</a>
+                    <hr>
+                   <a href="#">{{author.name}}</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col col-12 col-sm-12 col-md-4 col-lg-4 mb-4 ">
+            <div class="card bg-dark" >
+                <h4 class="card-header text-light">General Settings</h4>
+                <div class="card-body ">
+
+                    <a href="{% url 'blog:home' %}"> (N Y I!) </a>
+                    <hr>
+                    <a href="{% url 'blog:user-settings' %}"> My Settings</a>
+                    <hr>
+                   <a href="#">{{author.name}}</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

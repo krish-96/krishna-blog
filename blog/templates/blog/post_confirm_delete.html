@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+{% block title %} Post Delete Confirmation Page {% endblock %}
+{% block content %}
+
+
+<div class="site-section bg-light">
+    <div class="container ">
+        <div class="row ">
+
+            <div class="col-md-10">
+                <div class="section-title text-center mb-0">
+                    <h2 style="font-weight:900;font-family: 'Girassol', cursive;">Post Delete Confirmation </h2>
+                </div>
+                <form method="post">{% csrf_token %}
+                    <hr>
+                    <p class="text-center">Are you sure you want to delete {% if post %} "{{ post.title }}"? {% else %}
+                        {{object}} {% endif %}</p>
+
+                    <div class="text-center">
+                        <input type="submit" value="Confirm" class="btn btn-danger btn-sm">
+                        <a href="{% url 'blog:my-posts' %}" class="btn btn-warning btn-sm">Cancel</a>
+                    </div>
+                    <hr>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

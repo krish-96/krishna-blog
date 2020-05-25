@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block title %} Krishna Blog | Post - {{post.title|title}}  {% endblock title %}
+{% block content %}
+
+{% if messages %}<br>
+<div style="font-size:14px;" class="col-md-6 text-center mt-0 pt-0">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    <hr>
+    {% endfor %}
+</div>
+
+{% endif %}
+
+<div class="site-section">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 single-content">
+
+                <p class="mb-5">
+                    <img src={% if post.post_pic %}"{{post.post_pic.url}}" {% else %}"" {% endif %} alt="Image" class="img-fluid">
+                </p>
+                <h1 class="mb-4">
+                    {{ post.title }}
+                </h1>
+                <div class="post-meta d-flex mb-5">
+                    <div class="bio-pic mr-3">
+                        <img src="{{ post.creator.photo.url }}" alt="Image" class="img-fluidid">
+                    </div>
+                    <div class="vcard">
+                        <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                href="#">News</a></span>
+                        <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}}  <span
+                                class="icon-star2"></span></span>
+                    </div>
+                </div>
+
+                <p> {{ post.content| linebreaks}}</p>
+
+
+                <div class="pt-5">
+                    <p>Categories: <a href="#">Design</a>,
+                        <a href="#">Events</a>
+                        Tags:  <a href="#">{{ post.tags.name }}</a>, </p>
+                </div>
+
+                <!--  comment-list -->
+                <div class="pt-5">
+                    <div class="section-title">
+                        <h2 class="mb-5">{{comments.count}} Comment{{ comments.count | pluralize }} </h2>
+                    </div>
+
+                    <ul class="comment-list">
+                        {% for comment in comments %}
+                        <li class="comment">
+                            <div class="vcard bio">
+                                <img
+                                {% if comment.comment_user.photo %}
+                                 src="{{ comment.comment_user.photo.url }}" alt="Image">
+                                {% else %}
+                                 src="" alt="No Image">
+                                {% endif %}
+                            </div>
+                            <div class="comment-body">
+                                <h3>{{comment.name}}</h3>
+                                <div class="meta">{{comment.created_date}}</div>
+<!--                                <div class="meta">{{comment.updated_date}}</div>-->
+                                <p>{{comment.body}}</p>
+                                <p><a href="#" class="reply">Reply</a></p>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <!-- END comment-list -->
+
+                    <!-- New comment-list -->
+                    <div class="comment-form-wrap pt-3">
+                        <div class="section-title">
+                            <h2 class="mb-0">Leave a comment</h2>
+                        </div>
+                        {% if user.is_authenticated %}
+                        <form class="p-5 bg-light" method="POST">
+                            {% csrf_token %}
+<!--                            <div class="form-group">-->
+<!--                                <label for="name">Name *</label>-->
+<!--                                <input type="text" class="form-control" id="name" name="name" placeholder="You Name.">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="email">Email *</label>-->
+<!--                                <input type="email" class="form-control" id="email" name="email"-->
+<!--                                       placeholder="You Email.">-->
+<!--                            </div>-->
+
+                            <div class="form-group">
+                                <label for="body">Your Message</label>
+                                <textarea name="body" id="body" cols="30" rows="10" class="form-control"
+                                          placeholder="You Message Here."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Post Comment" class="btn btn-primary py-3 px-4">
+                            </div>
+
+                        </form>
+                        {% else %}
+                        <p> Only Registered users can add comments. <br>
+                        Already User?? <a href="{% url 'blog:login' %}"> LogIn</a> <br>
+                        New User?? <a href="{% url 'blog:register' %}"> Register</a></p>
+                        {% endif %}
+                    </div>
+                    <!-- End New comment-list -->
+                </div>
+            </div>
+
+
+            <!-- Popular Posts  -->
+            <div class="col-lg-3">
+                <div class="section-title">
+                    <h2>Popular Posts</h2>
+                </div>
+                {% for post in popular_posts %}
+
+                <div class="trend-entry d-flex">
+                    <div class="number align-self-start">0{{ forloop.counter }}</div>
+                    <div class="trend-contents">
+                        <h2><a href="{% url 'blog:post' post.slug %}">{{post.title}}</a></h2>
+                        <div class="post-meta">
+                                <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
+                                        href="#">News</a></span>
+                            <span class="date-read">{{ post.created_date }}<span class="mx-1">&bullet;</span> {{ post.published_date| timesince}} <span
+                                    class="icon-star2"></span></span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <p>
+                    <a href="#" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
+                </p>
+
+            </div>
+
+            <!-- End Popular Posts  -->
+
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
