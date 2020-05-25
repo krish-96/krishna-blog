@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn blog_pjoject.wsgi --log-file -
+web: gunicorn krishna_blog_project.wsgi --log-file -
