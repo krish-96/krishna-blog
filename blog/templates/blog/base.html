@@ -13,6 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=B612+Mono|Cabin:400,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static '' %}fonts/icomoon/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="{% static '' %}css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static '' %}css/jquery-ui.css">
@@ -36,12 +38,12 @@
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
 {% if messages %}<br>
-    <div style="font-size:14px;" class="col-md-12 text-center mt-0 pt-0">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message | safe}}</div>
-            <hr>
-        {% endfor %}
-    </div>
+<div style="font-size:14px;" class="col-md-12 text-center mt-0 pt-0">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message | safe}}</div>
+    <hr>
+    {% endfor %}
+</div>
 
 {% endif %}
 

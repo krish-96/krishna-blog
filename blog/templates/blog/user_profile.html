@@ -2,7 +2,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% block title %}  Profile - {{author.name|title}} {% endblock title %}
+{% block title %} Krishna Blog | {{author.name|title}}  Profile  {% endblock title %}
 
 
 {% block content %}
@@ -10,7 +10,7 @@
 
 <div class="site-section ">
     <div class="mb-2">
-    <h4 class="card-header text-center text-dark" id="author-head"><b>Profile </b></h4>
+    <h4 class="card-header text-center text-dark" id="author-head"><b> {{author.name|title}} Profile </b></h4>
 </div>
         <div class="row">
 
@@ -19,10 +19,10 @@
     {% if author %}
     <div class="row p-0 m-0 ">
         <div class="col col-12 col-sm-12 col-md-4 col-lg-4 p-5" >
-            <div class="card " ">
+            <div class="card  ">
                 <div class="card-body ">
                     <img class="rounded-circle" {% if author.photo %} src="{{author.photo.url}}" {% else %}
-                         src="{% static 'images/new_user.png' %}" {% endif %} title="{{author.name}}"
+                         src="{% static 'images/user.png' %}" {% endif %} title="{{author.name}}"
                          alt="{{author.name}}" height="300px"
                          width="300px">
                     <div class="card-body mb-0 pb-0 mt-2 pt-0" style="color:black;">
@@ -40,11 +40,11 @@
                     </div>
 
                     <div class="card m-0 p-0" >
-                        <a href="{% url 'blog:update-author' request.user %}" class="btn btn-warning btn-md"
+                        <a href="{% url 'blog:update-author' request.user %}" class="btn btn-warning btn-md m-1"
                           ><span
                                 style="font-weight:600;letter-spacing:1px;font-size:14px;">Update Profile</span>
                         </a>
-                        <a href="{% url 'blog:user-settings' %}" class="btn btn-danger btn-md"
+                        <a href="{% url 'blog:user-settings' %}" class="btn btn-warning btn-md m-1"
                            ><span
                                 style="font-weight:600;letter-spacing:1px;font-size:14px;">My Settings </span>
                         </a>
@@ -59,7 +59,7 @@
                 <div class="col col-12">
                     <div class=" text-dark  mt-4 mb-4">
                         <h4 class="card-header text-center" >About</h4>
-                        <div class="text-left mt-3 ml-3 mb-4" >
+                        <div class="text-center mt-3 ml-3 mb-4" >
                             <p>{% if author.about %}{{author.about}}{% else %} No Information Available. {% endif %}
                             </p>
                         </div>
@@ -78,29 +78,36 @@
                 </div>
                 <div class="col">
                     <div class="card mb-2 text-dark">
-                         <h4 class="card-header text-center " >Total Comments  </h4>
+                         <h4 class="card-header text-center " >Gained Comments  </h4>
                         <div class="card-body text-center" >
-                            <h2 style="color:blue; font-weight:900;">N I Y!</h2>
+                            <h2 style="color:blue; font-weight:900;">{{ total_comments }}</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card ">
-                         <h4 class="card-header text-center " >Total Likes </h4>
-                        <div class="card-body text-center" >
-                            <h2 style="color:blue; font-weight:900;">N I Y!</h2>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col">-->
+<!--                    <div class="card mb-2 text-dark">-->
+<!--                         <h4 class="card-header text-center " >Total Likes </h4>-->
+<!--                        <div class="card-body text-center" >-->
+<!--                            <h2 style="color:blue; font-weight:900;">N I Y!</h2>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
             </div>
 
             <div class="row">
                 <div class="col">
                     <div class=" mt-4 ">
-                         <h4 class="card-header text-center section-title" >Most commented posts : </h4>
-                        <div >
-                            <h2>N I Y!</h2>
+                         <h4 class="card-header text-center section-title" >Top commented 5 posts : </h4>
+                        <div class="mt-0" >
+                            {% if most_commented_posts %}
+                            {% for post in most_commented_posts %}
+                            <h5><a href="{% url 'blog:post' post.slug %}">{{forloop.counter}}.{{post.title}} : </a></h5>
+                            <p> {{post.content|truncatewords:50}}</p>
+                            {% endfor %}
+                            {% else %}
+                            <p>No posts Yet!</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

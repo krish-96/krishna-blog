@@ -1,3 +1,4 @@
+
 <h5 class="text-dark">User Actions</h5>
 <hr>
 <a href="{% url 'blog:user-profile' %}">My Profile </a>
@@ -8,6 +9,13 @@
 <hr>
 <a href="{% url 'blog:create-post' %}">Create a new Post</a>
 <hr>
-<a href="{% url 'blog:posts' %}">Public Posts </a>
+
+<h5 class="text-dark">Public Actions</h5>
 <hr>
-<a href="{% url 'blog:authors' %}">Public Authors </a>
+<a href="{% url 'blog:posts' %}">Blog Total Posts </a>
+<hr>
+<a href="{% url 'blog:authors' %}">Blog Total Authors </a>
+<hr>
+<a href="{% url 'blog:recent-posts' %}">Blog Recent Posts </a>
+<hr>
+<a href="{% url 'blog:popular-posts' %}">Blog Popular Authors </a>

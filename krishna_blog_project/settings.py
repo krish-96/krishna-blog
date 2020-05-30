@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'import_export',
     'crispy_forms',
     'blog.apps.BlogConfig',
+
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'KB-DB',
+#         'USER' : 'postgres',
+#         'PASSWORD' : 'king_krish',
+#         'HOST' : 'localhost',
+#         'PORT' : '5432'
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -124,6 +137,7 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -136,5 +150,6 @@ EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 # activating django_heroku
 django_heroku.settings(locals())

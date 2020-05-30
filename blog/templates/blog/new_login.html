@@ -3,7 +3,7 @@
 <html lang="en">
 {% load static %}
 
-{% block title %} User Login - Krishna Blog {% endblock title %}
+{% block title %} Krishna Blog | User Login {% endblock %}
 
 {% block content %}
 
@@ -13,56 +13,56 @@
         <div class="container ">
 
             <div class="section-title ">
-                <h3>Account Login</h3>
-                <hr>
-<!--                {% if messages %}<br>-->
-<!--                <div style="font-size:14px;" class="col-md-6 text-center mt-0 pt-0">-->
-<!--                    {% for message in messages %}-->
-<!--                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>-->
-<!--                    <hr>-->
-<!--                    {% endfor %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            {% endif %}-->
+                <div class="container-fluid">
+                    <div class="container ">
 
-            <form method="POST">
-                {% csrf_token %}
+<!--                    <h3 class="text-center">Account Login</h3>-->
+<!--                <hr>-->
 
-                <div class="row">
-                    <div class="col-md-6   form-group">
-                        <label for="username">Name : </label>
-                        <input type="text" id="username" name="username" class="form-control form-control"
-                               placeholder="Your Name">
-                        <hr>
+                <form method="POST">
+                    {% csrf_token %}
 
-                        <label for="password">Password : </label>
-                        <input type="password" id="password" name="password" class="form-control form-control"
-                               placeholder="Your Password">
+                    <div class="row">
+                        <div class="col-md-6   form-group">
+                            <h3 class="text-center">Account Login</h3>
+                            <hr>
+                            <label for="username">Name : </label>
+                            <input type="text" id="username" name="username" class="form-control form-control"
+                                   placeholder="Your Name">
+<!--                            <hr>-->
 
-                        <hr>
-                        <div class="col-md-12 mt-12 form-group text-center">
-                            <input type="submit" value="Login" class="btn btn-primary px-5 py-2">
+                            <label for="password">Password : </label>
+                            <input type="password" id="password" name="password" class="form-control form-control"
+                                   placeholder="Your Password">
+
+                            <hr>
+                            <div class="col-md-12 mt-12 form-group text-center">
+                                <input type="submit" value="Login" class="btn btn-primary btn-md m-1">
+                            </div>
+
+
+                            <div class="text-center">
+                                <p>Don't have a account?
+                                    <a href="{% url 'blog:register' %}">
+                                        Register </a>
+                                    <br>
+
+                                    Forgot Password?
+                                    <a href="{% url 'password_reset' %}">Reset
+                                        Password</a>
+
+
+                                </p>
+                            </div>
                         </div>
+                </form>
 
+                </div>
+                </div>
 
-                        <div class="text-center">
-                            <p>Don't have a account?
-                                <a href="{% url 'blog:register' %}">
-                                    Register </a>
-                                <br>
-
-                                Forgot Password?
-                                <a href="{% url 'password_reset' %}">Reset
-                                    Password</a>
-
-
-                            </p>
-                        </div>
-                    </div>
-            </form>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 </div>
 {% endblock %}

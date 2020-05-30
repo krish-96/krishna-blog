@@ -34,9 +34,10 @@ class ContactUsForm(forms.ModelForm):
         fields = "__all__"
 
 class UpdateAuthorForm(forms.ModelForm):
+    dob = forms.DateField( label='Date Of Birth :')
     class Meta:
         model = Author
-        fields = ['name',  'phone_no', 'email', 'address',  'photo' , 'about']
+        fields = ['name', 'dob',  'phone_no', 'email', 'address',  'photo' , 'about']
 
 class SearchForm(forms.Form):
     query = forms.CharField()

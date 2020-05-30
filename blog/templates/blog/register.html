@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 {% extends 'blog/base.html' %}
-<html lang="en">
 {% load static %}
 
-{% block title %} User Registration - Krishna Blog {% endblock title %}
+{% block title %} Krishna Blog | User Registration {% endblock %}
 
 {% block content %}
 
@@ -13,55 +12,66 @@
         <div class="container ">
 
             <div class="section-title ">
-                <h3>Account Registration </h3>
-                <hr>
-
-
-            <form method="POST">
-                {% csrf_token %}
-
-                <div class="row">
-                    <div class="col-md-6">
-                    <div class="col-md-12   form-group">
-                        <label for="username">Name : </label>
-                        <input type="text" id="username" name="username" class="form-control form-control"
-                               placeholder="User Name">
-                    </div>
-                        <hr>
-                    <div class="col-md-12   form-group">
-                        <label for="email">Email : </label>
-                        <input type="email" id="email" name="email" class="form-control form-control"
-                               placeholder="User Email">
+                <div class="container-fluid">
+                    <div class="container ">
 
                     </div>
-                     <hr>
-                    <div class="col-md-12   form-group">
-                        <label for="password">Password : </label>
-                        <input type="password" id="password" name="password1" class="form-control form-control"
-                               placeholder="Enter Password">
-                    </div>
-                        <hr>
-                        <div class="col-md-12   form-group">
-                        <label for="c_password">Confirm Password : </label>
-                        <input type="password" id="c_password" name="password2" class="form-control form-control"
-                               placeholder="Confirm Password">
-                        </div>
-                        <hr>
+                    <form method="POST">
+                        {% csrf_token %}
 
-                        <div class="col-md-12 mt-12 form-group text-center">
-                            <input type="submit" value="Register" class="btn btn-primary px-5 py-2">
-                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-md-12   form-group">
+                                    <h3 class="text-center">Account Registration </h3>
+                                    <hr>
+                                    <label for="username">Name : </label>
+                                    <input type="text" id="username" name="username" class="form-control form-control"
+                                           placeholder="User Name">
+                                </div>
+                                <!--                        <hr>-->
+                                <div class="col-md-12   form-group">
+                                    <label for="email">Email : </label>
+                                    <div class="text-left text-small mb-3">
+                                        <span class="text-muted"> ~ This mail will help You incase if you forget Your Password! </span>
+                                    </div>
+                                        <input type="email" id="email" name="email" class="form-control form-control"
+                                               placeholder="User Email">
 
-                        <div class="text-center">
-                            <p>Already have an acocunt? <a href="{% url 'blog:login' %}" style="font-size:18px;"> LogIn </a>
-                            </p>
-                        </div>
-                    </div>
-                    </div>
-            </form>
+                                    </div>
+                                    <!--                     <hr>-->
+                                    <div class="col-md-12   form-group">
+                                        <label for="password">Password : </label>
+                                        <input type="password" id="password" name="password1"
+                                               class="form-control form-control"
+                                               placeholder="Enter Password">
+                                    </div>
+                                    <!--                        <hr>-->
+                                    <div class="col-md-12   form-group">
+                                        <label for="c_password">Confirm Password : </label>
+                                        <input type="password" id="c_password" name="password2"
+                                               class="form-control form-control"
+                                               placeholder="Confirm Password">
+                                    </div>
+                                    <hr>
+
+                                    <div class="col-md-12 mt-12 form-group text-center">
+                                        <input type="submit" value="Register" class="btn btn-primary btn-md m-1">
+                                    </div>
+
+                                    <div class="text-center">
+                                        <p>Already have an acocunt? <a href="{% url 'blog:login' %}"
+                                                                       style="font-size:18px;"> LogIn </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 </div>
 {% endblock %}
+

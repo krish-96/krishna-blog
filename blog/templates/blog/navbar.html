@@ -65,6 +65,9 @@
                             </li>
                             {% if user.is_authenticated %}
                             <li>
+                                <a href="{% url 'blog:user-profile' %}" class="nav-link text-left">My Profile</a>
+                            </li>
+                            <li>
                                 <a href="{% url 'blog:dashboard' %}" class="nav-link text-left">Dashboard</a>
                             </li>
                             {% endif %}
@@ -74,9 +77,8 @@
                             <li>
                                 <a href="{% url 'blog:posts' %}" class="nav-link text-left">Posts</a>
                             </li>
-                            <li><a href="#" class="nav-link text-left">Categories</a></li>
+                            <li><a href="{% url 'blog:posts-category' %}" class="nav-link text-left">Filter</a></li>
                             <li><a href="{% url 'blog:contactus' %}" class="nav-link text-left">Contact Us</a></li>
-
                             {% if not user.is_authenticated %}
                             <li>
                                 <a href="{% url 'blog:register' %}" class="nav-link text-left">Register</a>
@@ -84,7 +86,7 @@
                             <li><a href="{% url 'blog:login' %}" class="nav-link text-left">LogIn</a></li>
                             {% else %}
                             <li>
-                                <a href="{% url 'blog:logout' %}" class="nav-link text-right">LogOut</a>
+                                <a href="{% url 'blog:logout' %}" class="nav-link text-left">LogOut</a>
                             </li>
                             {% endif %}
                         </ul>

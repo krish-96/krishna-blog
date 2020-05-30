@@ -2,7 +2,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-
 {% block title %} Krishna Blog | Post - {{post.title|title}}  {% endblock title %}
 {% block content %}
 
@@ -134,7 +133,7 @@
                 {% endfor %}
 
                 <p>
-                    <a href="#" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
+                    <a href="{% url 'blog:popular-posts' %}" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
                 </p>
 
             </div>

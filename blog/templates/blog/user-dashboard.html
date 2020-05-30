@@ -6,13 +6,19 @@
        letter-spacing:2px;
     }
 
+
 </style>
+
 {% block title %} Krishna Blog Dashboard {% endblock %}
 
 {% block content %}
 
 <div class="container mt-5 pt-5">
-    <div class="row">
+    <div class="mb-4">
+        <h4 class="card-header text-center text-dark">My Settings </h4>
+    </div>
+    <div class="row pt-2">
+
         <div class="col-md-2 mb-4">
             {% include 'blog/user-actions.html' %}
         </div>

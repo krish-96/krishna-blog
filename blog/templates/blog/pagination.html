@@ -1,32 +1,22 @@
-<style>
-    #pagination{
-            background-color : olive;
-             font-weight : 900;
-        }
-    .current{
-        color : gold;
-    }
-    #page{
-        color: linen;
-    }
-    .step-links a:hover{
-        background-color : black ;
-		padding : 3px;
-		margin-left : 10px;
-    }
-</style>
-<div class="text-center p-2 mb-0 pb-0 " id="pagination">
-			    <span class="step-links">
-			        {% if page_obj.has_previous %}
-			            <a href="?page=1" id="page">  <span>&laquo;&laquo;  First</span></a>
-			            <a href="?page={{ page_obj.previous_page_number }}" id="page"> &laquo; Previous</a>
-			        {% endif %}
-			        <span class="current">
-			            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-			        </span>
-			        {% if page_obj.has_next %}
-			            <a href="?page={{ page_obj.next_page_number }}" id="page"> Next &raquo;</a>
-			            <a href="?page={{ page_obj.paginator.num_pages }}" id="page">Last <span>&raquo;&raquo; </span></a>
-			        {% endif %}
-			    </span>
+<div class="row text-center">
+    <div class="col-lg-12">
+        <ul class="custom-pagination list-unstyled">
+
+            {% if page_obj.has_previous or page_obj.has_next %}
+
+                {% if page_obj.has_previous %}
+                    <li><a href="?page=1"> <span>&laquo;&laquo;  First</span></a></li>
+                    <li><a href="?page={{ page_obj.previous_page_number }}"> &laquo; Previous</a></li>
+                {% endif %}
+
+                    <li class="active">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</li>
+
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}"> Next &raquo;</a></li>
+                    <li><a href="?page={{ page_obj.paginator.num_pages }}">Last <span>&raquo;&raquo; </span></a></li>
+                {% endif %}
+
+            {% endif %}
+        </ul>
+    </div>
 </div>

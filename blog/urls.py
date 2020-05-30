@@ -4,10 +4,11 @@ from .views import (home, register_view, login_view, logout_view, contact_mail,
                     PostsList, post_view, create_post_view, post_update_view, post_delete_view,
                     AuthorsList, author_view, author_update_view, AuthorPostsList,
                     dashboard_view, profile_view, settings_view,
-                    recent_posts, popular_posts, search)
+                    RecentPostsList, search, popular_posts_view, WeekPosts, DayPosts, Category)
 
 app_name = 'blog'
 urlpatterns = [
+
     path('', home, name='home'),
 
     path('register/', register_view, name='register'),
@@ -47,12 +48,16 @@ urlpatterns = [
     path('my-posts/', AuthorPostsList.as_view(), name='my-posts'),
 
     path('posts/', PostsList.as_view(), name='posts'),
-    path('recent-posts/', recent_posts, name='recent-posts'),
-    path('popular-posts/', popular_posts, name='popular-posts'),
     path('post/<str:slug>/', post_view, name='post'),
     path('create-post', create_post_view, name='create-post'),
     path('delete-post/<str:slug>/', post_delete_view, name='delete-post'),
     path('update-post/<str:slug>/', post_update_view, name='update-post'),
+
+    path('recent-posts/', RecentPostsList.as_view(), name='recent-posts'),
+    path('popular-posts/', popular_posts_view, name='popular-posts'),
+    path('last-week-posts/', WeekPosts.as_view(), name='week-posts'),
+    path('last-24hrs-posts/', DayPosts.as_view(), name='day-posts'),
+    path('posts-filter/', Category.as_view(), name='posts-category'),
 
     path('authors/', AuthorsList.as_view(), name='authors'),
     path('author/<str:slug>/', author_view, name='author'),

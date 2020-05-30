@@ -1,16 +1,18 @@
+import random
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from . import popular
 from .forms import ContactUsForm, SignUpForm, CommentForm, CreatePostForm, UpdateAuthorForm, SearchForm
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import Post, Author, Comment, Public_Post, Author_Post
+from .models import Post, Author, Comment, Public_Post, Author_Post, Recent_Posts, Popular_Posts, Week_Posts, Day_Posts
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
@@ -42,7 +44,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Welcome {user.username.upper()}! You are logged in.")
+            messages.success(request, f"Welcome {user.username.upper()}! You are logged in now.")
             return redirect('blog:dashboard')
         else:
             messages.warning(request, 'Username OR Password is incorrect!')
@@ -52,27 +54,32 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "Thanks for using our web services. You are logged out.")
+    messages.success(request, "Thanks for using our Blog. Please Visit again.")
     return redirect('blog:login')
 
 
 def home(request):
-    posts = Post.objects.all()
+    posts = Public_Post.objects.all()
     slider_posts = posts.order_by('id')[0:6]
     picked_posts = posts.order_by('?')[0:5]
-    recent_posts = posts.order_by('-published_date')[:5:]
-    best_post = posts.get(title='The Wolf Story')
-    # best_post = posts.order_by('?')[0:1]
-    popular_posts = posts.order_by('-updated_date')[:5:]
-    context = {
-                'posts':posts,
-                'slider_posts':slider_posts,
-                'picked_posts':picked_posts,
-                'recent_posts':recent_posts,
-                'best_post':best_post,
-                'popular_posts':popular_posts,
+    recent_posts = Recent_Posts.objects.all()[:5:]
+    trending_posts = popular.popular()
+    best_post = Public_Post.objects.all().order_by('?')[0:1]
 
-           }
+    print(best_post,'best_post')
+
+    #  getting required no of popular posts
+    popular_posts = popular.popular()[0:5]
+
+    context = {
+        'posts': posts,
+        'slider_posts': slider_posts,
+        'picked_posts': picked_posts,
+        'trending_posts': trending_posts,
+        'recent_posts': recent_posts,
+        'best_post': best_post,
+        'popular_posts': popular_posts,
+    }
     return render(request, 'blog/index.html', context)
 
 
@@ -85,23 +92,12 @@ def dashboard_view(request):
     my_total_posts = my_posts.count()
     my_total_published_posts = my_posts.filter(status='P').count()
     my_total_draft_posts = my_posts.filter(status='D').count()
-    # my_total_public_posts = my_posts.filter(privacy='Public').count()
     my_total_public_posts = my_posts.filter(status='P', privacy='Public').count()
     my_total_private_posts = my_posts.filter(privacy='Private').count()
 
     latest_posts = posts.order_by('-published_date')[:5:]
-    top_posts = []
-    for post in posts:
-        com_count = post.comment_set.all().count()
-        post_title = post.title
-        t = (com_count, post_title)
-        top_posts.append(t)
-    top_posts.sort(reverse=True)
-    # most = []
-    most_commented = Post.objects.all().order_by('id')[0:2]
-    # for post in most_commented:
-    #     most = [(post.total_comments),(post.title)]
-    # print(most)
+    most_commented = popular.popular()[0:5]
+
     context = {
         'latest_posts': latest_posts,
         'comments': comments,
@@ -122,11 +118,23 @@ def profile_view(request):
     post_list = author.post_set.all()
 
     total_posts = post_list.count()
+    total_comments = 0
+    for post in post_list:
+        total_comments += post.comment_set.count()
+    popular_posts = popular.popular()
+    most_commented_posts = []
+    for post in popular_posts:
+        if post.creator == author:
+            most_commented_posts.append(post)
+    total_likes = post_list.count()
     recent_posts = post_list.order_by('-published_date')[:5:]
 
     context = {'post_list': post_list,
                'author': author,
                'total_posts': total_posts,
+               'total_comments': total_comments,
+               'total_likes': total_likes,
+               'most_commented_posts': most_commented_posts[0:5],
                'recent_posts': recent_posts,
                }
     return render(request, 'blog/user_profile.html', context)
@@ -155,40 +163,80 @@ class AuthorPostsList(LoginRequiredMixin, ListView):
 
 class PostsList(ListView):
     model = Public_Post
-    paginate_by = 10
+    paginate_by = 5
     template_name = 'blog/post_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = Public_Post.objects.all()
-        context['popular_posts']  = Post.objects.order_by('-updated_date')[:5:]
-        context['recent_posts']  = Post.objects.order_by('-published_date')[:5:]
+        context['popular_posts'] = popular.popular()[0:5]
+        context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
+
         return context
 
-def recent_posts(request):
+
+class RecentPostsList(ListView):
+    model = Recent_Posts
+    paginate_by = 5
+    template_name = 'blog/rec_or_pop_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recent'] = 'recent'
+        context['popular_posts'] = popular.popular()[0:5]
+        context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
+        return context
+
+
+def popular_posts_view(request):
     context = {
-        "recent": 'recent',
-        "object_list" : Post.objects.order_by('-published_date'),
-        "popular_posts" : Post.objects.order_by('-updated_date')[:5:],
-        "recent_posts" : Post.objects.order_by('-published_date'),
+        'popular': popular,
+        'object_list': popular.popular()[0:10],
+        'popular_posts': popular.popular()[0:5],
+        'recent_posts': Recent_Posts.objects.order_by('-published_date')[:5:],
     }
+    return render(request, 'blog/rec_or_pop_list.html', context)
 
-    return render(request, 'blog/post_list.html',context)
+
+class Category(ListView):
+    model = Week_Posts
+    paginate_by = 5
+    template_name = 'blog/category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['popular_posts'] = popular.popular()[0:5]
+        context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
+        return context
 
 
-def popular_posts(request):
-    context = {
-        "popular": 'popular',
-        "object_list" : Post.objects.order_by('-updated_date')[:5:],
-        "popular_posts" : Post.objects.order_by('-updated_date')[:5:],
-        "recent_posts": Post.objects.order_by('-published_date'),
-    }
+class WeekPosts(ListView):
+    model = Week_Posts
+    paginate_by = 5
+    template_name = 'blog/rec_or_pop_list.html'
 
-    return render(request, 'blog/post_list.html',context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['week'] = 'week'
+        context['popular_posts'] = popular.popular()[0:5]
+        context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
+        return context
+
+
+class DayPosts(ListView):
+    model = Day_Posts
+    paginate_by = 5
+    template_name = 'blog/rec_or_pop_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['day'] = 'day'
+        context['popular_posts'] = popular.popular()[0:5]
+        context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
+        return context
 
 
 def post_view(request, slug):
-    popular_posts = Post.objects.all().order_by('-updated_date')[:5:]
+    popular_posts = popular.popular()[0:5]
     post = Post.objects.get(slug=slug)
     comments = post.comment_set.filter(active=True)
     if request.method == 'POST':
@@ -199,9 +247,9 @@ def post_view(request, slug):
             if form.is_valid():
                 print("form is valid!")
                 new_comment = form.save(commit=False)
-                new_comment.name = request.user.first_name or  request.user.username
+                new_comment.name = request.user.first_name or request.user.username
                 name = new_comment.name
-                new_comment.email = request.user.email or  ''
+                new_comment.email = request.user.email or ''
                 new_comment.post = post
                 new_comment.comment_user = request.user.author
                 new_comment.save()
@@ -278,7 +326,7 @@ def post_delete_view(request, slug):
 
 class AuthorsList(ListView):
     model = Author
-    paginate_by = 3
+    paginate_by = 6
 
 
 def author_view(request, slug):
@@ -286,9 +334,20 @@ def author_view(request, slug):
     post_list = author.post_set.filter(~Q(status='D'), ~Q(privacy='Private'))
     recent_posts = post_list.order_by('-published_date')[:5:]
     total_posts = post_list.count()
+    total_comments = 0
+    for post in post_list:
+        total_comments += post.comment_set.count()
+    total_likes = post_list.count()
+    popular_posts = popular.popular()
+    most_commented_posts = []
+    for post in popular_posts:
+        if post.creator == author:
+            most_commented_posts.append(post)
     context = {'post_list': post_list,
                'author': author,
                'total_posts': total_posts,
+               'total_comments': total_comments,
+               'most_commented_posts': most_commented_posts[0:5],
                'recent_posts': recent_posts,
                }
     return render(request, 'blog/author_detail.html', context)
@@ -307,11 +366,12 @@ def search(request):
                 context = {
                     'query': query,
                     'object_list': posts,
-                    'popular_posts': Post.objects.all().order_by('-updated_date')[:5:]
+                    'popular_posts': Post.objects.all().order_by('-updated_date')[:5:],
+                    'recent_posts': Post.objects.all().order_by('-published_date')[:5:]
                 }
-                return render(request, 'blog/post_list.html', context)
+                return render(request, 'blog/rec_or_pop_list.html', context)
             else:
-                messages.warning(request, f'No Post or Author Found with the given keywords {query}')
+                messages.warning(request, f'No Post  Found with the given keyword \"{query}\"')
                 return redirect('/')
 
         return HttpResponseRedirect('/')
@@ -332,11 +392,12 @@ def author_update_view(request, slug):
             messages.success(request, "Profile updated successfully.")
             return redirect('blog:user-profile')
         else:
-            messages.error(request, "plaease correct the errors")
+            messages.warning(request, f"plaease correct the errors! {form.errors}")
 
     form = UpdateAuthorForm(instance=author)
     context = {"form": form}
     return render(request, 'blog/author_form.html', context)
+
 
 # @login_required(login_url='blog:login')
 def contact_mail(request):
@@ -359,7 +420,8 @@ def contact_mail(request):
             )
             email.send(fail_silently=False)
             form.save()
-            messages.success(request, f" Thanks for Contacting Us \' {name} \'. We'll contact you by your requested mail \' {mail} \'")
+            messages.success(request,
+                             f" Thanks for Contacting Us \' {name} \'. We'll contact you by your requested mail \' {mail} \'")
             return redirect('blog:home')
 
     return render(request, 'blog/contactus.html')

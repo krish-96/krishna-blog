@@ -2,7 +2,30 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% block title %} Krishna Blog | Posts List {% endblock %}
+{% block title %}
+Krishna Blog |
+
+{% if recent %}
+Recent Posts
+{% endif %}
+
+{% if popular %}
+Popular Posts
+{% endif %}
+
+{% if query %}
+Search - {{ query | title }}
+{% endif %}
+
+{% if week %}
+This Week Posts
+{% endif %}
+
+{% if day %}
+Last 24Hrs Posts
+{% endif %}
+
+{% endblock %}
 
 
 {% block content %}
@@ -14,8 +37,25 @@
             <!-- All Posts  -->
             <div class="col-lg-9">
                 <div class="section-title ">
+                    {% if recent %}
+                    <h2>Recent Posts :</h2>
+                    {% endif %}
+                    {% if popular %}
+                    <h2>Popular Posts : </h2>
+                    <h6 style="display:inline;"> ( Top 10 ) </h6>
+                    {% endif %}
+                    {% if query %}
+                    <h2>Search / <span style="color:blue;">{{ query | title }}</span></h2>
+                    <h5>Posts that contains "{{ query }}"</h5>
+                    {% endif %}
 
-                    <h2>Krishna Blog  Posts List :</h2>
+                    {% if week %}
+                    <h2>This Week Posts</h2>
+                    {% endif %}
+
+                    {% if day %}
+                    <h2>Last 24 hours Posts</h2>
+                    {% endif %}
                 </div>
                 {% if object_list %}
 
@@ -23,7 +63,7 @@
                 <div class="post-entry-2 d-flex">
                     <div class="thumbnail order-md-2" style="background-image: url({{ post.post_pic.url }});"></div>
                     <div class="contents order-md-1 pl-0">
-                        <h4><a href="{% url 'blog:post' post.slug %}">{{ post.title}}</a></h4>
+                        <h4><a href="{% url 'blog:post' post.slug %}"> {{ post.title}}</a></h4>
                         <p class="mb-3">{{ post.content | truncatewords:30}}</p>
                         <div class="post-meta">
                         <span class="d-block"><a href="{% url 'blog:author' post.creator.slug %}">{{ post.creator }}</a> in <a
@@ -46,11 +86,11 @@
                 {% include 'blog/pagination.html' %}
                 {% else %}
                 <div class="card-body text-center">
-                    <h6 class="alert alert-warning" ><b><i>This Blog does'not have any posts yet!</i></b></h6>
+                    <h6 class="alert alert-warning"><b><i>This Blog does'not have any posts yet!</i></b></h6>
                 </div>
                 {% endif %}
             </div>
-<!--             End All Posts  -->
+            <!--             End All Posts  -->
 
             <!-- Popular Posts  -->
             <div class="col-lg-3">
@@ -75,13 +115,14 @@
                 {% endfor %}
 
                 <p>
-                    <a href="{% url 'blog:popular-posts' %}" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
+                    <a href="{% url 'blog:popular-posts' %}" class="more">See All Popular Posts <span
+                            class="icon-keyboard_arrow_right"></span></a>
                 </p>
-                    {% else %}
-                    <div class=" text-center">
-                    <h6 class="alert alert-secondary" ><b><i>No posts available yet!!</i></b></h6>
+                {% else %}
+                <div class=" text-center">
+                    <h6 class="alert alert-secondary"><b><i>No posts available yet!!</i></b></h6>
                 </div>
-                    {% endif %}
+                {% endif %}
 
                 <!-- End Popular Posts  -->
 
@@ -111,20 +152,20 @@
                             class="icon-keyboard_arrow_right"></span></a>
                 </p>
                 {% else %}
-                    <div class=" text-center">
-                    <h6 class="alert alert-primary" ><b><i>No posts available yet!!</i></b></h6>
+                <div class=" text-center">
+                    <h6 class="alert alert-primary"><b><i>No posts available yet!!</i></b></h6>
                 </div>
-                    {% endif %}
+                {% endif %}
 
                 <!-- End Recent posts -->
-
 
             </div>
 
         </div>
 
-
     </div>
+
+
 </div>
 
 {% endblock %}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+Krishna Blog | Posts Filter
+{% endblock %}
+
+
+{% block content %}
+
+<div class="site-section">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col ">
+                <div class="section-title text-center">
+
+                    <h2>Filter according to your requirement </h2>
+
+                </div>
+                <p>
+
+                <h5>
+                    Here's the easiest way to find what you are looking for
+                </h5>
+                <h5> Choose an option : </h5>
+                <br>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-4 ml-5 ">
+                        <h5>
+                            <a href="{% url 'blog:posts' %}" class="px-4"> Total Posts </a>
+                            <hr>
+                        </h5>
+                        <h5>
+                            <a href="{% url 'blog:popular-posts' %}" class=" px-4  "> Popular Posts </a>
+                            <hr>
+                        </h5>
+                        <h5>
+                            <a href="{% url 'blog:recent-posts' %}" class=" px-4  ">Recent Posts </a>
+                            <hr>
+
+                        </h5>
+                        <h5>
+                            <a href="{% url 'blog:week-posts' %}" class=" px-4 ">Last Week Posts </a>
+                            <hr>
+                        </h5>
+                        <h5>
+                            <a href="{% url 'blog:day-posts' %}" class=" px-4  ">Last 24hrs Posts</a>
+                            <hr>
+                        </h5>
+
+
+                    </div>
+                </div>
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

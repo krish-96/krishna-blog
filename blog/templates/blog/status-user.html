@@ -76,7 +76,7 @@
             <h5 class="card-body pl-5 mb-0 pb-4" >
 
                 {% for post in latest_posts %}
-                <a href="{% url 'blog:post' post.slug %}">{{ forloop.counter }} . {{ post }}</a>
+                <a href="{% url 'blog:post' post.slug %}" style="color:blue; font-weight:900;">{{ forloop.counter }} . {{ post }}</a>
                 <br>
                 {% endfor %}</h5>
 
@@ -88,7 +88,7 @@
             <h5 class="card-body pl-5 mb-0 pb-4" >
 
                 {% for post in most_commented %}
-                <a href="{% url 'blog:post' post.slug %}">{{ forloop.counter }} . {{ post }}</a>
+                <a href="{% url 'blog:post' post.slug %}" style="color:blue; font-weight:900;">{{ forloop.counter }} . {{ post }}</a>
                 <br>
                 {% endfor %}</h5>
         </div>

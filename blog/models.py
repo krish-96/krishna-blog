@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
-from django.shortcuts import redirect
 from django.db.models import Q
 from django.urls import reverse
 from django.db.models import Avg, Count
@@ -41,14 +40,9 @@ class Tags(models.Model):
     def __str__(self):
         return self.name
 
-
 class Post(models.Model):
-    STATUS = (
-            ('D','draft'), ('P','published')
-         )
-    PRIVACY = (
-            ('Public','Public'), ('Private','Private')
-        )
+    STATUS = ( ('D','draft'), ('P','published') )
+    PRIVACY = ( ('Public','Public'), ('Private','Private') )
     CATEGORY =(
             ('Animals', 'Animals'),
             ('Birds', 'Birds'),
@@ -102,22 +96,62 @@ pre_save.connect(slug_gen, sender=Post)
 
 class Public_Posts_Manager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private'))
+        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private')).order_by('id')
 
 class Public_Post(Post):
     objects = Public_Posts_Manager()
     class Meta:
         proxy = True
 
+class Recent_Posts_Manager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private')).order_by('-published_date')
+
+class Recent_Posts(Post):
+    objects = Recent_Posts_Manager()
+    class Meta:
+        proxy = True
+
+class Popular_Posts_Manager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private')).order_by('comment')
+
+class Popular_Posts(Post):
+    objects = Popular_Posts_Manager()
+    class Meta:
+        proxy = True
+
 class Author_Posts_Manager(models.Manager):
     def get_queryset(self):
-        # return super().get_queryset().filter(status='P', privacy='Public')
         return super().get_queryset().all()
 
 class Author_Post(Post):
     objects = Author_Posts_Manager()
     class Meta:
         proxy = True
+
+class Week_Posts_Manager(models.Manager):
+    def get_queryset(self):
+        from datetime import date, timedelta
+        date = date.today()-timedelta(days=7)
+        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private'), ~Q(published_date__gte=date))
+
+class Week_Posts(Post):
+    objects = Week_Posts_Manager()
+    class Meta:
+        proxy = True
+
+class Day_Posts_Manager(models.Manager):
+    def get_queryset(self):
+        from datetime import date, timedelta
+        date = date.today()-timedelta(days=1)
+        return super().get_queryset().filter(~Q(status='D'), ~Q(privacy='Private'), ~Q(published_date__gte=date))
+
+class Day_Posts(Post):
+    objects = Day_Posts_Manager()
+    class Meta:
+        proxy = True
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
