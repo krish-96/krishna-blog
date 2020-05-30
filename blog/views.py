@@ -3,6 +3,7 @@ import random
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+
 from . import popular
 from .forms import ContactUsForm, SignUpForm, CommentForm, CreatePostForm, UpdateAuthorForm, SearchForm
 from django.core.mail import EmailMessage
@@ -64,9 +65,13 @@ def home(request):
     picked_posts = posts.order_by('?')[0:5]
     recent_posts = Recent_Posts.objects.all()[:5:]
     trending_posts = popular.popular()
-    best_post = Public_Post.objects.all().order_by('?')[0:1]
-
-    print(best_post,'best_post')
+    # try:
+    # best_post = Public_Post.objects.get(id='1')
+    best_post = popular.popular()[0:1]
+    title = [x for x in best_post]
+    print("title : ",title)
+    # except:
+    #     best_post = ''
 
     #  getting required no of popular posts
     popular_posts = popular.popular()[0:5]
