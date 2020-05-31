@@ -10,12 +10,12 @@ from django.db.models import Avg, Count
 class Author(models.Model):
     name = models.OneToOneField(User, unique=True, max_length=64, on_delete=models.CASCADE)
     dob = models.DateField(null=True, blank=True)
-    phone_no = models.IntegerField(blank=True, null=True)
+    phone_no = models.CharField(max_length=14, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     address = models.TextField(max_length=1000, blank=True, null=True)
     photo = models.ImageField(upload_to='author_img/', blank=True, null=True)
     joined_date = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(max_length=264, unique=True, null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
     about = models.TextField(max_length=5000, null=True, blank=True)
 
     def __str__(self):
@@ -33,12 +33,6 @@ def slg_gen(sender, instance, *args, **kwargs):
 		instance.slug =instance.name
 
 pre_save.connect(slg_gen, sender=Author)
-
-class Tags(models.Model):
-    name = models.CharField(max_length=64)
-
-    def __str__(self):
-        return self.name
 
 class Post(models.Model):
     STATUS = ( ('D','draft'), ('P','published') )
@@ -68,7 +62,9 @@ class Post(models.Model):
     published_date = models.DateTimeField(default=timezone.now)
     status = models.CharField(choices=STATUS, max_length=2, default='D')
     privacy = models.CharField(choices=PRIVACY, max_length=8, default='Public')
-    tags = models.ManyToManyField(Tags)
+    tag1 = models.CharField(max_length=24, blank=True, null=True)
+    tag2 = models.CharField(max_length=24, blank=True, null=True)
+    tag3 = models.CharField(max_length=24, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -102,6 +98,7 @@ class Public_Post(Post):
     objects = Public_Posts_Manager()
     class Meta:
         proxy = True
+        ordering = ('-published_date',)
 
 class Recent_Posts_Manager(models.Manager):
     def get_queryset(self):
@@ -174,3 +171,9 @@ class ContactUs(models.Model):
     email = models.EmailField(blank=False, null=False)
     subject = models.CharField(max_length=264, blank=False, null=False)
     body = models.TextField(max_length=2000, blank=False, null=False)
+
+class NewsLetter(models.Model):
+    mail = models.EmailField(blank=False, null=False)
+
+    def __str__(self):
+        return self.mail

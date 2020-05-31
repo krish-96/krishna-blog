@@ -77,12 +77,28 @@ WSGI_APPLICATION = 'krishna_blog_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
+# settings for MySql 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'KB_DB',
+        'USER' : 'root',
+        'PASSWORD' : 'king_krish',
+
     }
 }
+
+
+# settings for PostgreSql 
 
 # DATABASES = {
 #     'default': {
@@ -138,13 +154,14 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
 MEDIA_URL = '/media/'
 
 # SMTP server
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'krish.py.coding@gmail.com'
+# EMAIL_HOST_USER = 'krishblogwebsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'codingkrishna'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True

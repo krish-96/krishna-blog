@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactUs, Author, Post, Comment, Tags
+from .models import ContactUs, Author, Post, Comment,  NewsLetter
 from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Author)
@@ -21,6 +21,4 @@ class CommentAdmin(ImportExportModelAdmin):
 class ContactUsAdmin(ImportExportModelAdmin):
     list_display = ['name', 'email', 'subject', 'body']
 
-@admin.register(Tags)
-class TagsAdmin(ImportExportModelAdmin):
-    list_display = ['name']
+admin.site.register(NewsLetter)

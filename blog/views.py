@@ -5,10 +5,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 from . import popular
-from .forms import ContactUsForm, SignUpForm, CommentForm, CreatePostForm, UpdateAuthorForm, SearchForm
+from .forms import ContactUsForm, SignUpForm, CommentForm, CreatePostForm, UpdateAuthorForm, SearchForm, NewsLetterForm
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import Post, Author, Comment, Public_Post, Author_Post, Recent_Posts, Popular_Posts, Week_Posts, Day_Posts
+from .models import Post, Author, Comment, Public_Post, Author_Post, Recent_Posts, Popular_Posts, Week_Posts, Day_Posts, NewsLetter
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -61,17 +61,10 @@ def logout_view(request):
 
 def home(request):
     posts = Public_Post.objects.all()
-    slider_posts = posts.order_by('id')[0:6]
+    slider_posts = posts.order_by('id')[0:8]
     picked_posts = posts.order_by('?')[0:5]
     recent_posts = Recent_Posts.objects.all()[:5:]
-    trending_posts = popular.popular()
-    # try:
-    # best_post = Public_Post.objects.get(id='1')
-    best_post = popular.popular()[0:1]
-    title = [x for x in best_post]
-    print("title : ",title)
-    # except:
-    #     best_post = ''
+    trending_posts = popular.popular()[0:5]
 
     #  getting required no of popular posts
     popular_posts = popular.popular()[0:5]
@@ -82,7 +75,6 @@ def home(request):
         'picked_posts': picked_posts,
         'trending_posts': trending_posts,
         'recent_posts': recent_posts,
-        'best_post': best_post,
         'popular_posts': popular_posts,
     }
     return render(request, 'blog/index.html', context)
@@ -175,7 +167,6 @@ class PostsList(ListView):
         context = super().get_context_data(**kwargs)
         context['popular_posts'] = popular.popular()[0:5]
         context['recent_posts'] = Recent_Posts.objects.order_by('-published_date')[:5:]
-
         return context
 
 
@@ -365,7 +356,10 @@ def search(request):
             query = form.cleaned_data['query']
             posts = Post.objects.filter(Q(title__icontains=query)
                                         | Q(category__icontains=query)
-                                        | Q(content__icontains=query))
+                                        | Q(content__icontains=query)
+                                        | Q(tag1__icontains=query)
+                                        | Q(tag2__icontains=query)
+                                        | Q(tag3__icontains=query))
             if posts:
                 posts = posts
                 context = {
@@ -380,6 +374,46 @@ def search(request):
                 return redirect('/')
 
         return HttpResponseRedirect('/')
+
+
+@login_required(login_url='blog:login')
+def newsletter(request):
+    if request.method == "POST":
+        print('request arrived')
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            newsletter_email = request.POST['newsletter_mail']
+            if newsletter_email == '':
+                messages.warning(request, f'Please enter mail id for Subscription!')
+                return redirect('blog:home')
+            subscribers = NewsLetter.objects.all()
+            subscribers_list = []
+            for subscriber in subscribers:
+                subscribers_list.append(subscriber.mail)
+
+            if newsletter_email not in subscribers_list:
+                data = NewsLetter()
+                data.mail = newsletter_email
+                data.save()
+                print("data saved")
+                messages.success(request, f'Thanks for Being with us! we\'ll reach you through mail {newsletter_email}')
+                return redirect('blog:home')
+
+            else:
+                messages.warning(request, f'Already Subscription activated on this mail!')
+                return redirect('blog:home')
+
+        else:
+            messages.warning(request, f'Please enter a valid mail!!')
+            return redirect('blog:home')
+
+    return HttpResponseRedirect('/')
+
+
+def aboutus_view(request):
+    return render(request, 'blog/aboutus.html')
+
 
 
 @login_required(login_url='blog:login')
@@ -414,19 +448,40 @@ def contact_mail(request):
             sub = request.POST.get('subject')
             meassage = request.POST.get('body')
 
+            # sending mail to our Bcc group
             email = EmailMessage(
-                'Hello! You got a mail from ' + "mail",
+                'Hello! You got a mail from ' + str(mail),
                 "Name : " + str(name) + '\n'
                                         f"Email : {str(mail)} \n"
                                         f"Subject : {str(sub)} \n"
                                         f"Meassage : {str(meassage)} \n",
                 settings.EMAIL_HOST_USER,  # 'from@example.com',
-                ['nagaraj015973@gmail.com', 'love.haters.fully@gmail.com'],  # to@example.com',
+                ['krishnablogwebsite@gmail.com', 'nagaraj015973@gmail.com'],  # to@example.com',
             )
             email.send(fail_silently=False)
             form.save()
+
+            # sending response to the requested user  that we received his/her message
+            try:
+                # sending message received response to the requested user
+                # sending mail to the requested user
+                user_email = EmailMessage(
+                    f'This is from Krishna-Blog!',
+                    
+                        f"Hi {str(name)}! We have received your message." + '\n' 
+                        f"Subject :  {str(sub)} " + '\n'
+                        f"This mail will be used to contact you in future." + '\n'
+                        f"Thanks for ContactingUs " + '\n' ,
+
+                    settings.EMAIL_HOST_USER,  # 'from@example.com',
+                    [str(mail)],  # to@example.com',
+                )
+                user_email.send(fail_silently=False)
+            except:
+                pass
+
             messages.success(request,
-                             f" Thanks for Contacting Us \' {name} \'. We'll contact you by your requested mail \' {mail} \'")
+                             f" Thanks for Contacting Us  {name}!. We'll contact you by your requested mail - {mail} ")
             return redirect('blog:home')
 
     return render(request, 'blog/contactus.html')

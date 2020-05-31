@@ -70,6 +70,9 @@
                             <li>
                                 <a href="{% url 'blog:dashboard' %}" class="nav-link text-left">Dashboard</a>
                             </li>
+                            <li>
+                                <a href="{% url 'blog:create-post' %}" class="nav-link text-left">Make a Post</a>
+                            </li>
                             {% endif %}
                             <li>
                                 <a href="{% url 'blog:authors' %}" class="nav-link text-left">Authors </a>
@@ -79,7 +82,9 @@
                             </li>
                             <li><a href="{% url 'blog:posts-category' %}" class="nav-link text-left">Filter</a></li>
                             <li><a href="{% url 'blog:contactus' %}" class="nav-link text-left">Contact Us</a></li>
+                            <li><a href="{% url 'blog:aboutus' %}" class="nav-link text-left">About Us</a></li>
                             {% if not user.is_authenticated %}
+                            
                             <li>
                                 <a href="{% url 'blog:register' %}" class="nav-link text-left">Register</a>
                             </li>

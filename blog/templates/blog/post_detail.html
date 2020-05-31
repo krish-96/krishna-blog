@@ -12,7 +12,7 @@
             <div class="col-lg-8 single-content">
 
                 <p class="mb-5">
-                    <img src={% if post.post_pic %}"{{post.post_pic.url}}" {% else %}"" {% endif %} alt="Image" class="img-fluid">
+                    <img src="{% if post.post_pic %} {{post.post_pic.url}} {% else %}'' {% endif %}" alt="Image" class="img-fluid">
                 </p>
                 <h1 class="mb-4">
                     {{ post.title }}
@@ -37,9 +37,21 @@
 
 
                 <div class="pt-5">
-                    <p>Categories: <a href="#">Design</a>,
-                        <a href="#">Events</a>
-                        Tags:  <a href="#">{{ post.tags.name }}</a>, </p>
+                    <p>Categories : <a href="#">{{post.category}}</a>
+                        &nbsp &nbsp &nbsp
+                        Tags :  
+                         
+                         {% if post.tag1 %}
+                        <a href="#">{{ post.tag1 }}</a> 
+                        {% endif %}
+                        {% if post.tag2 %}
+                        , &nbsp <a href="#">{{ post.tag2 }}</a>
+                        {% endif %} 
+                        {% if post.tag3 %}
+                        , &nbsp <a href="#">{{ post.tag3 }}</a>
+                        {% endif %} 
+                        
+                    </p>
                 </div>
 
                 <!--  comment-list -->
@@ -116,6 +128,7 @@
                 <div class="section-title">
                     <h2>Popular Posts</h2>
                 </div>
+                {% if popular_posts %}
                 {% for post in popular_posts %}
 
                 <div class="trend-entry d-flex">
@@ -132,9 +145,15 @@
                 </div>
                 {% endfor %}
 
+
                 <p>
                     <a href="{% url 'blog:popular-posts' %}" class="more">See All Popular Posts <span class="icon-keyboard_arrow_right"></span></a>
                 </p>
+                {% else %}
+                <div class=" text-center">
+                    <h6 class="alert alert-secondary" ><b><i>No posts available yet!!</i></b></h6>
+                </div>
+                {% endif %}
 
             </div>
 

@@ -4,7 +4,8 @@ from .views import (home, register_view, login_view, logout_view, contact_mail,
                     PostsList, post_view, create_post_view, post_update_view, post_delete_view,
                     AuthorsList, author_view, author_update_view, AuthorPostsList,
                     dashboard_view, profile_view, settings_view,
-                    RecentPostsList, search, popular_posts_view, WeekPosts, DayPosts, Category)
+                    RecentPostsList, search, popular_posts_view, WeekPosts, DayPosts, Category, newsletter,
+                    aboutus_view)
 
 app_name = 'blog'
 urlpatterns = [
@@ -64,6 +65,8 @@ urlpatterns = [
     path('update-author/<slug:slug>/', author_update_view, name='update-author'),
 
     path("search/", search, name='search'),
+    path("newsletter/", newsletter, name='newsletter'),
+    path("aboutus/", aboutus_view, name='aboutus'),
 
     path('contactus/', contact_mail, name='contactus'),
 

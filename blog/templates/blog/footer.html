@@ -2,16 +2,19 @@
 <div class="site-section subscribe bg-light">
     <div class="container">
 
-        <form action="#" class="row align-items-center">
+        <form action="/newsletter/" method="POST" class="row align-items-center">
+            {% csrf_token %}
             <div class="col-md-5 mr-auto">
                 <h2>Newsletter Subcribe</h2>
-                <p> WE'll workk on this so soon!!!!!</p>
+                <p> Please subscribe to our blog to get Updates! </p>
             </div>
             <div class="col-md-6 ml-auto">
+                
                 <div class="d-flex">
-                    <input type="email" class="form-control" placeholder="Enter your email">
-                    <button type="submit" class="btn btn-secondary"><span class="icon-paper-plane"></span></button>
+                        <input type="email" id="newsletter_mail" name="newsletter_mail" class="form-control" placeholder="Enter your email">
+                        <button type="submit" class="btn btn-secondary"><span class="icon-paper-plane"></span></button>
                 </div>
+                 
             </div>
         </form>
         <hr>
@@ -19,7 +22,7 @@
 
 
     <div class="container">
-        <div class="column one">
+        <div class="column  ">
 
 
             <div class="textwidget">
@@ -41,8 +44,8 @@
 
                         <a href="tel:+91 7223334444">+91 XXX XXX XXXX</a>
                         -
-                        <a href="mailto:krishna.py.coding@gmail.com">
-                            <i class="icon-mail-line" aria-hidden="true"></i> krishna@blog.ex
+                        <a href="mailto:krishnablogwebsite@gmail.com">
+                            <i class="icon-mail-line" aria-hidden="true"></i> krishnablogwebsite@gmail.com
                         </a>
 
                     </div>

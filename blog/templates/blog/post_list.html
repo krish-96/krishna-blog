@@ -21,7 +21,14 @@
 
                 {% for post in object_list %}
                 <div class="post-entry-2 d-flex">
+                    {% if post.post_pic %}
                     <div class="thumbnail order-md-2" style="background-image: url({{ post.post_pic.url }});"></div>
+                    {% else %}
+                    <div class="thumbnail order-md-2" style="background-image: url();" >
+                        <br>
+                        <img src="" alt="No image!">
+                    </div>
+                    {% endif %}
                     <div class="contents order-md-1 pl-0">
                         <h4><a href="{% url 'blog:post' post.slug %}">{{ post.title}}</a></h4>
                         <p class="mb-3">{{ post.content | truncatewords:30}}</p>

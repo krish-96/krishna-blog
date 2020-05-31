@@ -1,0 +1,46 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %} Krishna Blog | Contact Us {% endblock %}
+
+{% block content %}
+
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6 offset-auto">
+                <div class="section-title mb-3 ">
+                    <h2 >About Us</h2>
+                </div>
+                <div class="pl-2 pr-2 text-center">
+                    
+                    <p>
+                        This Blog is Developed by Krishna.Bellamkonda.
+                        <p>We can build Websites based on your Requirement.</p>
+                        <p>Contact Us : 
+                            <br><i class="icon-mobile" aria-hidden="true"></i>
+                             <a href="tel:+91 7022333968">+91 7022 333 968</a>
+<br>
+                            <a href="mailto:krishnablogwebsite@gmail.com">
+                            <i class="icon-mail-line" aria-hidden="true"></i> krishnablogwebsite@gmail.com
+                        </a>
+</p><p>
+    
+                        <br>
+                        <!-- I have good knowledge in Python, Django, MySQL, HTML, CSS, BootStrap,   -->
+                    </p>
+                </div>
+            </div>
+                <div class="col-md-6 offset-auto text-center">
+                    <p>
+                        <img src="{% static 'images/krishna.jpeg' %}" height="50%" width="50%">
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

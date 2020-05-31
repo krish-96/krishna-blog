@@ -35,7 +35,7 @@
                             <span >{{author.address|linebreaks}}
                             </span>
                         </h6>
-                        <h6> Joined Date : <span >{{author.joined_date|date|linebreaks}}</span>
+                        <h6> Joined On : <span >{{author.joined_date|date|linebreaks}}</span>
                         </h6>
                     </div>
 
@@ -106,7 +106,7 @@
                             <p> {{post.content|truncatewords:50}}</p>
                             {% endfor %}
                             {% else %}
-                            <p>No posts Yet!</p>
+                            <p>No Comments available on Posts!</p>
                             {% endif %}
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import ContactUs, Comment, Post, Author
+from .models import ContactUs, Comment, Post, Author, NewsLetter
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -14,7 +14,7 @@ class CreatePostForm(forms.ModelForm):
     # slug = forms.CharField( label='Post Slug')
     class Meta:
         model = Post
-        fields = ['title', 'post_pic', 'category','tags', 'content',   'status' , 'privacy']
+        fields = ['title', 'post_pic', 'category','tag1', 'tag2', 'tag3', 'content',   'status' , 'privacy']
         widgets = {
 
             'content': forms.Textarea(attrs={'class': 'input', 'placeholder': 'Write about your Post  here.','cols': 80, 'rows':15}),
@@ -41,3 +41,8 @@ class UpdateAuthorForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query = forms.CharField()
+
+class NewsLetterForm(forms.Form):
+    class Meta:
+        model = NewsLetter
+        fields  =  "__all__"
