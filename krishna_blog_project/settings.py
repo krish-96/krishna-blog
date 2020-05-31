@@ -77,25 +77,25 @@ WSGI_APPLICATION = 'krishna_blog_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 # settings for MySql 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'KB_DB',
-        'USER' : 'root',
-        'PASSWORD' : 'king_krish',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'xxx',
+#         'USER' : 'xxx',
+#         'PASSWORD' : 'xxxx',
 
-    }
-}
+#     }
+# }
 
 
 # settings for PostgreSql 
@@ -104,9 +104,9 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'KB-DB',
-#         'USER' : 'postgres',
-#         'PASSWORD' : 'king_krish',
-#         'HOST' : 'localhost',
+#         'USER' : 'xxxxx',
+#         'PASSWORD' : 'xxxx',
+#         'HOST' : 'xxxx',
 #         'PORT' : '5432'
 #     }
 # }
